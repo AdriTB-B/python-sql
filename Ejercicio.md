@@ -1,0 +1,6 @@
+- Crear una BBDD en Oracle de pocos registros que contenga 5 campos (Id, Compañía, Préstamo, Porcentaje, Nombre proyecto).
+- Crear una BBDD que simularia las regulaciones Europeas del cambio climático y los campos son (Id, Nombre Proyecto)
+- Quiero que me leas esos datos con Python conectándote a la BBDD. Como te comenté, en el proyecto vas a usarlo y es importante que lo sepas.
+- Hacer alguna transformación a las tablas (me da igual cual pero quiero ver qué sabes hacer alguna transformación cómo añadir filas, recorrerlas...)
+- Crear una tabla con Pyhton nueva que sea la unión de los proyectos que tienen el mismo Nombre Proyecto .
+- Guardar esa tabla en BBDD
