@@ -1,20 +1,25 @@
 import db_connection
 import pandas as pd
 
+
 with db_connection.connection() as conn:
     # Operaciones
     # Obtener empresas
-    df_empresas = pd.read_sql('select * from dbo.empresas',conn)
+    df_empresas = pd.read_sql('select * from dbo.proy_empresa',conn,index_col='id')
     print(f'Empresas\n{df_empresas}')
 
     # Obtener regulacion europea
-    df_eeuu_reg = pd.read_sql('select * from dbo.eeuu_reg',conn)
-    print(f'Regulacion europea\n{df_eeuu_reg}')
+    df_ue_reg = pd.read_sql('select * from dbo.proy_reg_ue',conn, index_col='id')
+    print(f'Regulacion europea\n{df_ue_reg}')
 
     # Añadir columna a empresas
-    # conn.execute("""alter table dbo.empresas add interes numeric(18,0)""")
-    df_empresas['interes'] = df_empresas['prestamo'] * (df_empresas['porcentaje']/100)
+    # conn.execute("""alter table dbo.proy_empresa add interes as prestamo * porcentaje""")
     print(df_empresas)
-    df_empresas.to_sql(name='dbo.empresas',con=conn, if_exists='replace')
+
+    # Crear tabla común
+    df_proy_ue = df_empresas[df_empresas['nombre_proyecto'].isin(df_ue_reg['nombre_proyecto'])]
+    print(f'Tabla común de proyectos\n{df_proy_ue}')
+    df_proy_ue.to_sql('proy_ue',db_connection.get_engine(),if_exists='replace')
+    print(conn.execute('select * from proy_ue').fetchall())
 
 
