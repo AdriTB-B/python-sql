@@ -5,7 +5,8 @@ from sqlalchemy.engine import URL
 # Configuración
 driver='{ODBC Driver 17 for SQL server}'
 server='L2205014'
-db='empresas'
+# db='empresas'
+db='AdventureWorks2008R2'
 uid='BOSONIT\adrian.tena'
 pwd=''
 cnx_str = (f"""Driver={driver};

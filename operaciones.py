@@ -21,6 +21,5 @@ with db_connection.get_engine().connect() as conn:
     df_proy_ue = df_empresas[df_empresas['nombre_proyecto'].isin(df_ue_reg['nombre_proyecto'])]
     print(f'Tabla común de proyectos\n{df_proy_ue}')
     df_proy_ue.to_sql('proy_ue',conn,if_exists='replace')
-    print(conn.execute('select * from proy_ue').fetchall())
 
 
