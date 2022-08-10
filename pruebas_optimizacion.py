@@ -7,29 +7,34 @@ import time
 df_sales = None
 dfs = []
 
-def load_df(*args):    
-    sql = f'select * from sales.SalesOrderDetail order by SalesOrderDetailID OFFSET {args[0][0]} ROWS FETCH NEXT {args[0][1]} ROWS ONLY '
-    print(sql)
-    return pd.read_sql(
-        sql,
-        args[0][2],
-        index_col='SalesOrderDetailID'
-        )
+def load_df(*args):   
+    with db_connection.get_engine().connect() as conn:  
+        sql = f'select * from sales.SalesOrderDetail order by SalesOrderDetailID OFFSET {args[0][0]} ROWS FETCH NEXT {args[0][1]} ROWS ONLY '
+        print(sql)
+        return pd.read_sql(
+            sql,
+            conn,
+            index_col='SalesOrderDetailID'
+            )
+def get_count():
+    with db_connection.get_engine().connect() as conn:
+        count = conn.execute('select count(*) from sales.SalesOrderDetail').fetchone()[0]
+        print(f'Registros a encontrar: {count}')
+        return count
 
 if __name__=='__main__':
     start_time = time.time()
     #########################
-    with mp.Pool(mp.cpu_count()) as pool: 
-        conn = db_connection.get_engine().connect()     
-        steps = [(x,15000,conn) for x in range(0,120000,15000)]
-        print(steps)
+    with mp.Pool(mp.cpu_count()) as pool:
+        reg_count = get_count()
+        cpus = mp.cpu_count()
+        limit = reg_count//8
+        steps = [(x,limit) for x in range(0,reg_count,limit)]
+        print(f'Particiones: {steps}')
         dfs = pool.map(load_df,steps)       
    
         df_sales = pd.concat(dfs)
-        print(df_sales.count())
-        conn.close()
-   
-        
+        print(f'Registros obtenidos: {df_sales.count()}')
     #########################    
     print(f'Demora: {time.time() - start_time}')
     
