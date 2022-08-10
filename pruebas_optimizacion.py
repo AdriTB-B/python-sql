@@ -58,7 +58,7 @@ def one():
 
 def get_count():
     with db_connection.get_engine().connect() as conn:
-        count = conn.execute('select count(*) from sales.SalesOrderDetail').fetchone()[0]
+        count = conn.execute(f'select count(*) from {table}').fetchone()[0]
         print(f'Registros a encontrar: {count}')
         return count
 
