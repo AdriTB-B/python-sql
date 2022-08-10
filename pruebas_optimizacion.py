@@ -1,7 +1,4 @@
 
-from operator import le
-from subprocess import call
-from unittest.util import _count_diff_hashable
 import pandas as pd
 import db_connection
 import multiprocessing as mp
@@ -58,6 +55,12 @@ def one():
             index_col=id
             )
     print(f'Demora de un proceso: {time.time() - start_time}')
+
+def get_count():
+    with db_connection.get_engine().connect() as conn:
+        count = conn.execute('select count(*) from sales.SalesOrderDetail').fetchone()[0]
+        print(f'Registros a encontrar: {count}')
+        return count
 
 
 if __name__=='__main__':
