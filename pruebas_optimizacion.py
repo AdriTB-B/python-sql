@@ -62,17 +62,18 @@ def get_count():
         print(f'Registros a encontrar: {count}')
         return count
 
-
-if __name__=='__main__':
+def main():
     print('Inicio de las consultas')
     #########################
-    one()
     multi()
+    one()
     conn.close()
     print(f'Registros obtenidos: {df_sales.count()}')
     print(df_sales.head(10))
-    #########################    
-    
+    #########################  
+
+if __name__=='__main__':
+    main()
 
 
 
