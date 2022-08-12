@@ -64,7 +64,7 @@ def main():
     print('Inicio de las consultas')
     #########################
     df_sales = multi()
-    one()
+    df_sales = one()
     conn.close()
     # print(f'Registros obtenidos: {df_sales.count()}')
     print(df_sales.head(10))
